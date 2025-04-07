@@ -3,12 +3,8 @@
 # dependencies
 /node_modules
 /.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+.pnp.js
+/.npmrc
 
 # testing
 /coverage
@@ -30,8 +26,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# local env files
+.env
+.env*.local
 
 # vercel
 .vercel
@@ -39,3 +36,25 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local Netlify folder
+.netlify
+
+# public files
+/public/robots.txt
+/public/sitemap*
+
+#multitenant
+/.env
+/multitenant-images.ts
+/tailwind.config.js
+fontlinks.ts
+multitenant-errors.ts
+config/*
+routes/actions.ts
+routes/breadcrumbs.labels.ts
+routes/Routes.ts
+GeneralConfig.ts
+forms/fixtures/openform.ts
+routesConfig.json
+redirectsConfig.json
