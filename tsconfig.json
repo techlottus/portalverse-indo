@@ -34,9 +34,6 @@
       "@/forms/*": [
         "./forms/*"
       ],
-      "@/utils/*": [
-        "./utils/*"
-      ],
       "@/config/*": [
         "./config/*"
       ],
