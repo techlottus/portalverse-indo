@@ -47,7 +47,6 @@ next-env.d.ts
 #multitenant
 /.env
 /multitenant-images.ts
-/tailwind.config.js
 fontlinks.ts
 multitenant-errors.ts
 config/*
