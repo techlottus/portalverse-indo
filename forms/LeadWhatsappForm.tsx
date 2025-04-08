@@ -63,8 +63,8 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
     name: false,
     last_name: false,
     phone: false,
-    email: false,
-    modality: false,
+    // email: false,
+    // modality: false,
   }
   /**
    * An object containing error messages for form validation.
@@ -74,9 +74,9 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
   const errorMessages = {
     name: "Ingresa tu nombre",
     last_name: "Ingresa tu apellido",
-    email: "Ingresa un correo electrónico válido",
+    // email: "Ingresa un correo electrónico válido",
     phone: "Ingresa un numero de teléfono válido",
-    modality: "Campo requerido",
+    // modality: "Campo requerido",
   }
   /**
    * Represents the initial validation state for form data fields.
@@ -87,8 +87,8 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
     name: false,
     last_name: false,
     phone: false,
-    email: false,
-    modality: false,
+    // email: false,
+    // modality: false,
   }
   /**
    * Initial data structure for lead information in the WhatsApp form.
@@ -97,100 +97,11 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
     name: "",
     last_name: "",
     phone: "",
-    email: "",
-    modality: "",
-  }
-  /**
-   * Generates a list of select options based on the provided business unit (BU).
-   *
-   * @returns {Array<{ text: string, value: string }>} An array of objects representing the select options.
-   * Each object contains:
-   * - `text`: The display text for the option.
-   * - `value`: The corresponding value for the option.
-   */
-  const getSelectOpt = () => {
-    let options: any = []
-    switch (bu) {
-      case 'ULA':
-        options = [{ text: "Online", value: "online" },
-        { text: "Semipresencial", value: "semipresencial" },
-        { text: "Presencial", value: "presencial" },
-        ]
-        break;
-      case 'UTC':
-        options = [{ text: "Online", value: "online" },
-        { text: "Presencial", value: "presencial" },
-        ]
-        break;
-      case 'UANE':
-        options = [{ text: "Online", value: "online" },
-        { text: "Sabatino", value: "semipresencial" },
-        { text: "Presencial", value: "presencial" },
-        ]
-        break;
-      case 'UTEG':
-        options = [{ text: "Online", value: "online" },
-        { text: "Flex", value: "semipresencial" },
-        { text: "Presencial", value: "presencial" },
-        ]
-        break;
-      default:
-        options = [{ text: "Online", value: "online" },
-        { text: "Presencial", value: "presencial" },
-        { text: "Semipresencial", value: "semipresencial" },
-        ]
-        break;
-    }
-    return options
+    // email: "",
+    modality: "Presencial",
   }
 
-  const get_campus_to_lead = (modality: string) => {
-    let options: Record<string, string | null> = {}
-    switch (bu) {
-      case 'ULA':
-        options = {
-          'online': 'ONLINE',
-          'semipresencial': null,
-          'presencial': null
-        }
-        break;
-      case 'UTC':
-        options = {
-          'online': 'A DISTANCIA',
-          'presencial': null
-        }
-        break;
-      case 'UANE':
-        options = {
-          'online': 'VIRTUALIDAD',
-          'semipresencial': null,
-          'presencial': null
-        }
-        break;
-      case 'UTEG':
-        options = {
-          'online': 'UTEG ONLINE',
-          'semipresencial': 'UTEG FLEX',
-          'presencial': null
-        }
-        break;
-      default:
-        options = {
-          'online': 'ONLINE',
-          'semipresencial': null,
-          'presencial': null
-        }
-        break
-    }
-    return options?.[modality]
-  }
-  /**
-   * Retrieves the options for a select input.
-   * This function is used to populate the select dropdown with available options.
-   *
-   * @returns {Array} An array of options for the select input.
-   */
-  const optionsSelect = getSelectOpt();
+
 
   //State hook to manage the lead data for the form.
   const [leadData, setLeadData] = useState(leadDataInit)
@@ -250,15 +161,15 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
       case "phone":
         isValid = /^\d{10}$/.test(value)
         break
-      case "email":
-        isValid = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z0-9]{2,4}$/i.test(value)
-        break
-      case "modality":
-        isValid = value !== "" && value !== "Seleccione una modalidad"
-        break
-      case "countryCode":
-        isValid = /^\+[0-9]{1,2}$/.test(value);
-        break
+      // case "email":
+      //   isValid = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z0-9]{2,4}$/i.test(value)
+      //   break
+      // case "modality":
+      //   isValid = value !== "" && value !== "Seleccione una modalidad"
+      //   break
+      // case "countryCode":
+      //   isValid = /^\+[0-9]{1,2}$/.test(value);
+      //   break
       default:
         isValid = true
     }
@@ -317,7 +228,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
   const handleSubmit = async (e: any, mediaq: string = "desktop") => {
     e.preventDefault()
     setLoading(true)
-    if (dataValid?.modality && dataValid?.name && dataValid?.phone) {
+    if (dataValid?.name && dataValid?.phone) {
       // Enviar datos
       // console.log("Datos enviados:", leadData, utmData);
 
@@ -328,13 +239,13 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
           body: JSON.stringify({
             name: leadData.name,
             last_name: leadData.last_name,
-            email: leadData.email,
+            email: null,
             phone: leadData.phone,
-            modality: leadData.modality,
+            modality: 'Presencial',
             metadata: {
               "bussiness_line": bu === 'UTEG' && (leadData?.modality === 'online' || leadData?.modality === 'semipresencial') ? "ULA" : bu,//todo agregar condiciones según modalidad
               "lead_source": "Digital",
-              "campusWTL": get_campus_to_lead(leadData.modality),
+              "campusWTL": "TLALNEPANTLA",
               "utm_chanel": "Whatsapp",
               "utm_medium": utmData?.utm_medium || null,
               "utm_campaign": utmData?.utm_campaign || null,
@@ -435,7 +346,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
         />
         {leadDataErrors?.phone && <Field.Helper className='text-error-500'>{errorMessages?.phone}</Field.Helper>}
       </Field.Root>
-      <Field.Root hasError={errorControls.email}>
+      {/* <Field.Root hasError={errorControls.email}>
         <Input
           isValid={dataValid.email}
           placeholder="Correo Electrónico"
@@ -453,8 +364,8 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
             handleInputData(e.target.value, "email")
           }} />
         {leadDataErrors.email && <Field.Helper className='text-error-500'>{errorMessages.email}</Field.Helper>}
-      </Field.Root>
-      <Field.Root hasError={leadDataErrors.modality}>
+      </Field.Root> */}
+      {/* <Field.Root hasError={leadDataErrors.modality}>
         <Select.Root
           required
           disabled={false}
@@ -481,14 +392,14 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
           </Select.Content>
         </Select.Root>
         {leadDataErrors.modality && <Field.Helper>{errorMessages?.modality}</Field.Helper>}
-      </Field.Root>
-      <button disabled={!dataValid?.name || !dataValid?.email || !dataValid?.last_name || !dataValid?.phone || !dataValid?.modality || loading} type="submit"
+      </Field.Root> */}
+      <button disabled={!dataValid?.name  || !dataValid?.last_name || !dataValid?.phone  || loading} type="submit"
         onClick={(e: any) => handleSubmit(e, "mobile")} className={cn('desktop:hidden tablet:hidden px-4 py-3 rounded-2xl bg-[#25d366] text-surface-0 font-texts font-normal text-lg cursor-pointer', {
-          ["opacity-50 cursor-not-allowed"]: !dataValid?.name || !dataValid?.email || !dataValid?.last_name || !dataValid?.phone || !dataValid?.modality,
+          ["opacity-50 cursor-not-allowed"]: !dataValid?.name  || !dataValid?.last_name || !dataValid?.phone ,
         })}>{loading ? <span className="material-symbols-outlined text-surface-100 !text-[20px] align-middle animate-spin">progress_activity</span> : "Iniciar Chat"}</button>
-      <button disabled={loading || !dataValid?.name || !dataValid?.email|| !dataValid?.last_name || !dataValid?.phone || !dataValid?.modality} type="submit"
+      <button disabled={loading || !dataValid?.name || !dataValid?.last_name || !dataValid?.phone } type="submit"
         onClick={(e: any) => handleSubmit(e)} className={cn('mobile:hidden px-4 py-3 rounded-2xl bg-[#25d366] text-surface-0 font-texts font-normal text-lg cursor-pointer', {
-          ["opacity-50 cursor-not-allowed"]: !dataValid?.name ||!dataValid?.email || !dataValid?.last_name || !dataValid?.phone || !dataValid?.modality,
+          ["opacity-50 cursor-not-allowed"]: !dataValid?.name || !dataValid?.last_name || !dataValid?.phone ,
         })}>{loading ? <span className="material-symbols-outlined text-surface-100 !text-[20px] align-middle animate-spin">progress_activity</span> : "Iniciar Chat"}</button>
     </form>
   )
