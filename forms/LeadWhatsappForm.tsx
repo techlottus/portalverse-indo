@@ -230,7 +230,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
     setLoading(true)
     if (dataValid?.name && dataValid?.phone) {
       // Enviar datos
-      // console.log("Datos enviados:", leadData, utmData);
+      console.log("Datos enviados:", leadData, utmData);
 
       try {
         const response = await fetch(`${endpoint}/leads/create`, {
