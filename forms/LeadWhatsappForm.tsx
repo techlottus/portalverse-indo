@@ -7,6 +7,10 @@ import cn from "classnames"
 
 type LeadWhatsappFormTypes = {
   leadPhone?: string | string[];
+  event_name?: string | string[] | null;
+  event_source?: string | string[] | null;
+  event_source_url: string | string[] | undefined;
+  client_user_agent: string | string[] | undefined;
   utmData?: {
     utm_content?: string | string[] | null;
     utm_term?: string | string[] | null;
@@ -44,7 +48,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
    * @property {string} leadPhone - The phone number of the lead.
    * @property {object} utmData - The UTM data associated with the lead, typically used for tracking marketing campaigns.
    */
-  const { leadPhone, utmData, utmLeads } = props;
+  const { leadPhone, utmData, utmLeads, event_name = "completeRegistration", event_source = "website", event_source_url, client_user_agent } = props;
 
   /**
    * Retrieves the business unit from the environment variables.
@@ -237,11 +241,18 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            event_time: Date.now(),
+            send_capi: true,
+            event_source_url: event_source_url,
+            client_user_agent: client_user_agent,
+            event_name: event_name,
+            action_source: event_source,
             name: leadData.name,
             last_name: leadData.last_name,
             email: null,
             phone: leadData.phone,
             modality: 'Presencial',
+            scope: "whatsapp widget",
             metadata: {
               "bussiness_line": bu === 'UTEG' && (leadData?.modality === 'online' || leadData?.modality === 'semipresencial') ? "ULA" : bu,//todo agregar condiciones según modalidad
               "lead_source": "Digital",
@@ -253,7 +264,8 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
               "utm_term": utmData?.utm_term || null,
               "gclid": utmData?.gclid || null,
               "source": utmData?.source || null,
-              "utm_leads": utmLeads
+              "utm_leads": utmLeads,
+               "modality": leadData.modality
             },
           }),
         });
@@ -393,13 +405,13 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
         </Select.Root>
         {leadDataErrors.modality && <Field.Helper>{errorMessages?.modality}</Field.Helper>}
       </Field.Root> */}
-      <button disabled={!dataValid?.name  || !dataValid?.last_name || !dataValid?.phone  || loading} type="submit"
+      <button disabled={!dataValid?.name || !dataValid?.last_name || !dataValid?.phone || loading} type="submit"
         onClick={(e: any) => handleSubmit(e, "mobile")} className={cn('desktop:hidden tablet:hidden px-4 py-3 rounded-2xl bg-[#25d366] text-surface-0 font-texts font-normal text-lg cursor-pointer', {
-          ["opacity-50 cursor-not-allowed"]: !dataValid?.name  || !dataValid?.last_name || !dataValid?.phone ,
+          ["opacity-50 cursor-not-allowed"]: !dataValid?.name || !dataValid?.last_name || !dataValid?.phone,
         })}>{loading ? <span className="material-symbols-outlined text-surface-100 !text-[20px] align-middle animate-spin">progress_activity</span> : "Iniciar Chat"}</button>
-      <button disabled={loading || !dataValid?.name || !dataValid?.last_name || !dataValid?.phone } type="submit"
+      <button disabled={loading || !dataValid?.name || !dataValid?.last_name || !dataValid?.phone} type="submit"
         onClick={(e: any) => handleSubmit(e)} className={cn('mobile:hidden px-4 py-3 rounded-2xl bg-[#25d366] text-surface-0 font-texts font-normal text-lg cursor-pointer', {
-          ["opacity-50 cursor-not-allowed"]: !dataValid?.name || !dataValid?.last_name || !dataValid?.phone ,
+          ["opacity-50 cursor-not-allowed"]: !dataValid?.name || !dataValid?.last_name || !dataValid?.phone,
         })}>{loading ? <span className="material-symbols-outlined text-surface-100 !text-[20px] align-middle animate-spin">progress_activity</span> : "Iniciar Chat"}</button>
     </form>
   )

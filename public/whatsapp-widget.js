@@ -147,9 +147,13 @@
         </style>
     `;
 
-  function initWidget(whatsapp_phone, source, base_url) {    
+  function initWidget(whatsapp_phone, source, base_url) {
     const chatWidget = document.createElement("div");
     chatWidget.id = "chat-widget";
+    const currentUrl = encodeURIComponent(window.location.href);
+    const userAgent = encodeURIComponent(navigator.userAgent);
+    const iframeSrc = `${base_url}/whatsapp-form-page/?phone=${whatsapp_phone}&${window.location.search.substring(1)}&source=Widget WhatsApp ${source}&event_source_url=${currentUrl}&client_user_agent=${userAgent}`;
+    
     chatWidget.innerHTML = `
       <div id="chat-frame-widget" class="shadow-xl">
         <div class="bg-dark-green" style="height:60px; max-width: 320px; min-width:200px; width:100% ;display: flex; align-items: center; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; padding: 0 16px; justify-content: space-between;">
@@ -165,7 +169,7 @@
             </svg>
           </button>
         </div>
-        <iframe id="iframe" src="${base_url}/whatsapp-form-page/?phone=${whatsapp_phone}&${window.location.search.substring(1)}&source=Widget WhatsApp ${source}" style="  width: 300px; min-width:200px; max-width:320px; height: -webkit-fill-available;height:100%; opacity: 1; color-scheme: none; background: white !important; margin: 0px; max-height: -webkit-fill-available; max-height:-moz-available; z-index: 999999999 !important; border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem;padding-right: 16px;padding-left: 16px; border:none;"></iframe>
+        <iframe id="iframe" src="${iframeSrc}" style="  width: 300px; min-width:200px; max-width:320px; height: -webkit-fill-available;height:100%; opacity: 1; color-scheme: none; background: white !important; margin: 0px; max-height: -webkit-fill-available; max-height:-moz-available; z-index: 999999999 !important; border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem;padding-right: 16px;padding-left: 16px; border:none;"></iframe>
       </div>
       <button id="btn-trigger-chat">
         <svg class="text-surface-0 h-9 w-9" width="100%" height="100%" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -182,10 +186,10 @@
     const frameWidget = document.getElementById("chat-frame-widget");
     frameWidget.style.display = "none";
     btn.addEventListener("click", () => {
-        frameWidget.style.display = "flex";
+      frameWidget.style.display = "flex";
     });
     closebtn.addEventListener("click", () => {
-        frameWidget.style.display = "none";
+      frameWidget.style.display = "none";
     });
     window.addEventListener("message", function (e) {
       if (e.data && e.data.event === "whatsapp_lead") {

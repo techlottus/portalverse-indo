@@ -22,6 +22,21 @@ const WhatsappFormPage = () => {
     .map(([key, value]) => `${key}=${value}`)
     .join('&');
 
+  const getEventSourceUrl = ()=>{
+    try {
+      return window?.top?.location.origin || window.location.origin
+    } catch (error) {
+      return queryParams?.event_source_url
+    }
+  }
+  const getClientUserAgent = ()=>{
+    try {
+      return window?.top?.navigator.userAgent || window.navigator.userAgent
+    } catch (error) {
+      return queryParams?.client_user_agent
+    }
+  }
+
   return <section className="flex justify-end">
     <Head>
       <title>Whatsapp Form</title>
@@ -32,7 +47,14 @@ const WhatsappFormPage = () => {
         <div className="flex flex-col p-6 gap-2">
           <h3 className="font-texts text-2xl text-surface-800 font-bold">Completa con tus datos</h3>
           <p className="font-texts text-base text-surface-800 font-normal">Para más información compártenos los siguientes datos</p>
-          <LeadWhatsappForm utmLeads={queryString} leadPhone={queryParams?.phone} utmData={utmParams}/>
+          <LeadWhatsappForm 
+            utmLeads={queryString} 
+            leadPhone={queryParams?.phone} 
+            utmData={utmParams} 
+            event_name={queryParams?.event_name} 
+            event_source={queryParams?.event_source}
+            event_source_url={getEventSourceUrl()}
+            client_user_agent={getClientUserAgent()}/>
         </div>
       </div>
     </section>
