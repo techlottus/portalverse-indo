@@ -9,6 +9,8 @@ type LeadWhatsappFormTypes = {
   leadPhone?: string | string[];
   event_name?: string | string[] | null;
   event_source?: string | string[] | null;
+  event_source_url: string | string[] | undefined;
+  client_user_agent: string | string[] | undefined;
   utmData?: {
     utm_content?: string | string[] | null;
     utm_term?: string | string[] | null;
@@ -46,7 +48,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
    * @property {string} leadPhone - The phone number of the lead.
    * @property {object} utmData - The UTM data associated with the lead, typically used for tracking marketing campaigns.
    */
-  const { leadPhone, utmData, utmLeads, event_name="completeRegistration", event_source="website"  } = props;
+  const { leadPhone, utmData, utmLeads, event_name="completeRegistration", event_source="website" , event_source_url, client_user_agent } = props;
 
   /**
    * Retrieves the business unit from the environment variables.
@@ -232,7 +234,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
     setLoading(true)
     if (dataValid?.name && dataValid?.phone) {
       // Enviar datos
-      console.log("Datos enviados:", leadData, utmData);
+      // console.log("Datos enviados:", leadData, utmData);
 
       try {
         const response = await fetch(`${endpoint}/leads/create`, {
@@ -241,8 +243,8 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
           body: JSON.stringify({
             event_time: Date.now(),
             send_capi: true,
-            event_source_url: window?.top?.location.origin || window.location.origin || null,
-            client_user_agent: window?.top?.navigator.userAgent || window.navigator.userAgent || null,
+            event_source_url: event_source_url  || window?.top?.location.origin || window.location.origin || null,
+            client_user_agent: client_user_agent || window?.top?.navigator.userAgent || window.navigator.userAgent || null,
             event_name: event_name,
             action_source: event_source,
             name: leadData.name,
