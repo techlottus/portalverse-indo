@@ -48,7 +48,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
    * @property {string} leadPhone - The phone number of the lead.
    * @property {object} utmData - The UTM data associated with the lead, typically used for tracking marketing campaigns.
    */
-  const { leadPhone, utmData, utmLeads, event_name="completeRegistration", event_source="website" , event_source_url, client_user_agent } = props;
+  const { leadPhone, utmData, utmLeads, event_name = "completeRegistration", event_source = "website", event_source_url, client_user_agent } = props;
 
   /**
    * Retrieves the business unit from the environment variables.
@@ -243,8 +243,8 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
           body: JSON.stringify({
             event_time: Date.now(),
             send_capi: true,
-            event_source_url: event_source_url ,
-            client_user_agent: client_user_agent ,
+            event_source_url: event_source_url,
+            client_user_agent: client_user_agent,
             event_name: event_name,
             action_source: event_source,
             name: leadData.name,
@@ -252,6 +252,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
             email: null,
             phone: leadData.phone,
             modality: 'Presencial',
+            scope: "whatsapp widget",
             metadata: {
               "bussiness_line": bu === 'UTEG' && (leadData?.modality === 'online' || leadData?.modality === 'semipresencial') ? "ULA" : bu,//todo agregar condiciones según modalidad
               "lead_source": "Digital",
@@ -404,13 +405,13 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
         </Select.Root>
         {leadDataErrors.modality && <Field.Helper>{errorMessages?.modality}</Field.Helper>}
       </Field.Root> */}
-      <button disabled={!dataValid?.name  || !dataValid?.last_name || !dataValid?.phone  || loading} type="submit"
+      <button disabled={!dataValid?.name || !dataValid?.last_name || !dataValid?.phone || loading} type="submit"
         onClick={(e: any) => handleSubmit(e, "mobile")} className={cn('desktop:hidden tablet:hidden px-4 py-3 rounded-2xl bg-[#25d366] text-surface-0 font-texts font-normal text-lg cursor-pointer', {
-          ["opacity-50 cursor-not-allowed"]: !dataValid?.name  || !dataValid?.last_name || !dataValid?.phone ,
+          ["opacity-50 cursor-not-allowed"]: !dataValid?.name || !dataValid?.last_name || !dataValid?.phone,
         })}>{loading ? <span className="material-symbols-outlined text-surface-100 !text-[20px] align-middle animate-spin">progress_activity</span> : "Iniciar Chat"}</button>
-      <button disabled={loading || !dataValid?.name || !dataValid?.last_name || !dataValid?.phone } type="submit"
+      <button disabled={loading || !dataValid?.name || !dataValid?.last_name || !dataValid?.phone} type="submit"
         onClick={(e: any) => handleSubmit(e)} className={cn('mobile:hidden px-4 py-3 rounded-2xl bg-[#25d366] text-surface-0 font-texts font-normal text-lg cursor-pointer', {
-          ["opacity-50 cursor-not-allowed"]: !dataValid?.name || !dataValid?.last_name || !dataValid?.phone ,
+          ["opacity-50 cursor-not-allowed"]: !dataValid?.name || !dataValid?.last_name || !dataValid?.phone,
         })}>{loading ? <span className="material-symbols-outlined text-surface-100 !text-[20px] align-middle animate-spin">progress_activity</span> : "Iniciar Chat"}</button>
     </form>
   )
