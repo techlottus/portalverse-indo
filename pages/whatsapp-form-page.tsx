@@ -53,8 +53,8 @@ const WhatsappFormPage = () => {
             utmData={utmParams} 
             event_name={queryParams?.event_name} 
             event_source={queryParams?.event_source}
-            event_source_url={queryParams?.event_source_url}
-            client_user_agent={queryParams?.client_user_agent}/>
+            event_source_url={queryParams?.event_source_url || "https://www.facebook.com/"}
+            client_user_agent={queryParams?.client_user_agent || ""}/>
         </div>
       </div>
     </section>
