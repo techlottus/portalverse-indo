@@ -22,20 +22,20 @@ const WhatsappFormPage = () => {
     .map(([key, value]) => `${key}=${value}`)
     .join('&');
 
-  // const getEventSourceUrl = ()=>{
-  //   try {
-  //     return window?.top?.location.origin || window.location.origin
-  //   } catch (error) {
-  //     return queryParams?.event_source_url
-  //   }
-  // }
-  // const getClientUserAgent = ()=>{
-  //   try {
-  //     return window?.top?.navigator.userAgent || window.navigator.userAgent
-  //   } catch (error) {
-  //     return queryParams?.client_user_agent
-  //   }
-  // }
+  const getEventSourceUrl = ()=>{
+    try {
+      return window?.top?.location.origin || window.location.origin
+    } catch (error) {
+      return queryParams?.event_source_url
+    }
+  }
+  const getClientUserAgent = ()=>{
+    try {
+      return window?.top?.navigator.userAgent || window.navigator.userAgent
+    } catch (error) {
+      return queryParams?.client_user_agent
+    }
+  }
 
   return <section className="flex justify-end">
     <Head>
@@ -53,8 +53,8 @@ const WhatsappFormPage = () => {
             utmData={utmParams} 
             event_name={queryParams?.event_name} 
             event_source={queryParams?.event_source}
-            event_source_url={queryParams?.event_source_url || "https://www.facebook.com/"}
-            client_user_agent={queryParams?.client_user_agent || ""}/>
+            event_source_url={getEventSourceUrl()}
+            client_user_agent={getClientUserAgent()}/>
         </div>
       </div>
     </section>
