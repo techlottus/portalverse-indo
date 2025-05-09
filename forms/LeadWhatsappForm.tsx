@@ -7,8 +7,6 @@ import cn from "classnames"
 
 type LeadWhatsappFormTypes = {
   leadPhone?: string | string[];
-  event_name?: string | string[] | null;
-  event_source?: string | string[] | null;
   utmData?: {
     utm_content?: string | string[] | null;
     utm_term?: string | string[] | null;
@@ -46,7 +44,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
    * @property {string} leadPhone - The phone number of the lead.
    * @property {object} utmData - The UTM data associated with the lead, typically used for tracking marketing campaigns.
    */
-  const { leadPhone, utmData, utmLeads, event_name="completeRegistration", event_source="website"  } = props;
+  const { leadPhone, utmData, utmLeads } = props;
 
   /**
    * Retrieves the business unit from the environment variables.
@@ -232,19 +230,13 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
     setLoading(true)
     if (dataValid?.name && dataValid?.phone) {
       // Enviar datos
-      console.log("Datos enviados:", leadData, utmData);
+      // console.log("Datos enviados:", leadData, utmData);
 
       try {
         const response = await fetch(`${endpoint}/leads/create`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            event_time: Date.now(),
-            send_capi: true,
-            event_source_url: window?.top?.location.origin || window.location.origin || null,
-            client_user_agent: window?.top?.navigator.userAgent || window.navigator.userAgent || null,
-            event_name: event_name,
-            action_source: event_source,
             name: leadData.name,
             last_name: leadData.last_name,
             email: null,
@@ -261,8 +253,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
               "utm_term": utmData?.utm_term || null,
               "gclid": utmData?.gclid || null,
               "source": utmData?.source || null,
-              "utm_leads": utmLeads,
-              "modality": leadData.modality
+              "utm_leads": utmLeads
             },
           }),
         });
