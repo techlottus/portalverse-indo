@@ -48,6 +48,35 @@ const nextConfig = {
   },
   experimental: {
     largePageDataBytes: 128 * 100000,
+  },
+  headers: async () => {
+    return [
+      {
+        source: '/whatsapp-widget.js',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*'
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET,OPTIONS'
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: '*'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'no-referrer-when-downgrade'
+          }
+        ]
+      },
+      ...securityHeaders.map(header => ({
+        source: '/(.*)',
+        headers: [header]
+      }))
+    ]
   }
 }
 
