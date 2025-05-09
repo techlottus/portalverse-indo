@@ -151,8 +151,9 @@
     const chatWidget = document.createElement("div");
     chatWidget.id = "chat-widget";
     const currentUrl = encodeURIComponent(window.location.href);
-    const iframeSrc = `${base_url}/whatsapp-form-page/?phone=${whatsapp_phone}&${window.location.search.substring(1)}&source=Widget WhatsApp ${source}&page_url=${currentUrl}`;
-
+    const userAgent = encodeURIComponent(navigator.userAgent);
+    const iframeSrc = `${base_url}/whatsapp-form-page/?phone=${whatsapp_phone}&${window.location.search.substring(1)}&source=Widget WhatsApp ${source}&event_source_url=${currentUrl}&client_user_agent=${userAgent}`;
+    
     chatWidget.innerHTML = `
       <div id="chat-frame-widget" class="shadow-xl">
         <div class="bg-dark-green" style="height:60px; max-width: 320px; min-width:200px; width:100% ;display: flex; align-items: center; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; padding: 0 16px; justify-content: space-between;">
