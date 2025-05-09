@@ -265,7 +265,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
               "gclid": utmData?.gclid || null,
               "source": utmData?.source || null,
               "utm_leads": utmLeads,
-              "modality": leadData.modality
+               "modality": leadData.modality
             },
           }),
         });
