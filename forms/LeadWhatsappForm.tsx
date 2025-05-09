@@ -243,8 +243,8 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
           body: JSON.stringify({
             event_time: Date.now(),
             send_capi: true,
-            event_source_url: event_source_url  || window?.top?.location.origin || window.location.origin || null,
-            client_user_agent: client_user_agent || window?.top?.navigator.userAgent || window.navigator.userAgent || null,
+            event_source_url: event_source_url ,
+            client_user_agent: client_user_agent ,
             event_name: event_name,
             action_source: event_source,
             name: leadData.name,
