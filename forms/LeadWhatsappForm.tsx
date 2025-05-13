@@ -242,7 +242,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             event_time: Date.now(),
-            send_capi: true,
+            send_capi: false,
             event_source_url: event_source_url,
             client_user_agent: client_user_agent,
             event_name: event_name,
