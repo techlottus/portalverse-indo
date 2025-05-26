@@ -51,6 +51,8 @@ const WhatsappFormPage = () => {
             utmLeads={queryString} 
             leadPhone={queryParams?.phone} 
             utmData={utmParams} 
+            send_capi={queryParams?.send_capi}
+            send_gtm={queryParams?.send_gtm}
             event_name={queryParams?.event_name} 
             event_source={queryParams?.event_source}
             event_source_url={getEventSourceUrl()}
