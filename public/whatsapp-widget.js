@@ -147,12 +147,32 @@
         </style>
     `;
 
-  function initWidget(whatsapp_phone, source, base_url) {
+  function initWidget(props) {
+    const { base_url, whatsapp_phone, source, send_capi, send_gtm} = props;
+    if (typeof base_url !== 'string' || !base_url.startsWith('https')) {
+      console.error('Prop "base_url" debe ser un string y debe ser una URL válida');
+    }
+    if (typeof whatsapp_phone !== 'number' || !Number.isInteger(whatsapp_phone) || whatsapp_phone.toString().length !== 10) { 
+      console.error('Prop "whatsapp_phone" debe ser un número entero de 10 dígitos');
+      return;
+    }
+
+    if (typeof source !== 'string') {
+      console.error('Prop "source" debe ser un string');
+    }
+
+    if ( typeof send_gtm !== 'boolean') {
+      console.error('Prop "send_gtm" debe ser true o false');
+    }
+
+    if ( typeof send_capi !== 'boolean') {
+      console.error('Prop "send_capi" debe ser un true o false');
+    }
     const chatWidget = document.createElement("div");
     chatWidget.id = "chat-widget";
     const currentUrl = encodeURIComponent(window.location.href);
     const userAgent = encodeURIComponent(navigator.userAgent);
-    const iframeSrc = `${base_url}/whatsapp-form-page/?phone=${whatsapp_phone}&${window.location.search.substring(1)}&source=Widget WhatsApp ${source}&event_source_url=${currentUrl}&client_user_agent=${userAgent}`;
+    const iframeSrc = `${base_url}/whatsapp-form-page/?phone=${whatsapp_phone}&${window.location.search.substring(1)}&source=Widget WhatsApp ${source}&event_source_url=${currentUrl}&client_user_agent=${userAgent}&send_capi=${send_capi}&send_gtm=${send_gtm}`;
     
     chatWidget.innerHTML = `
       <div id="chat-frame-widget" class="shadow-xl">

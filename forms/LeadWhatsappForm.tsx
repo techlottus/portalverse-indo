@@ -11,6 +11,8 @@ type LeadWhatsappFormTypes = {
   event_source?: string | string[] | null;
   event_source_url: string | string[] | undefined;
   client_user_agent: string | string[] | undefined;
+  send_capi?: string | string[] | undefined;
+  send_gtm?: string | string[] | undefined;
   utmData?: {
     utm_content?: string | string[] | null;
     utm_term?: string | string[] | null;
@@ -48,7 +50,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
    * @property {string} leadPhone - The phone number of the lead.
    * @property {object} utmData - The UTM data associated with the lead, typically used for tracking marketing campaigns.
    */
-  const { leadPhone, utmData, utmLeads, event_name = "completeRegistration", event_source = "website", event_source_url, client_user_agent } = props;
+  const { leadPhone, utmData, utmLeads, event_name = "completeRegistration", event_source = "website", event_source_url, client_user_agent, send_gtm = 'false', send_capi = 'false' } = props;
 
   /**
    * Retrieves the business unit from the environment variables.
@@ -242,7 +244,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             event_time: Date.now(),
-            send_capi: false,
+            send_capi: send_capi === 'true' ? true : false,
             event_source_url: event_source_url,
             client_user_agent: client_user_agent,
             event_name: event_name,
@@ -265,7 +267,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
               "gclid": utmData?.gclid || null,
               "source": utmData?.source || null,
               "utm_leads": utmLeads,
-               "modality": leadData.modality
+              "modality": leadData.modality
             },
           }),
         });
@@ -274,11 +276,14 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
           throw new Error(`Error: ${response} ${response}`);
         }
         setLoading(false)
-        // Whatsapp redirect 
-        window.parent.postMessage({
-          event: "whatsapp_lead",
-          ...leadData, ...utmData,
-        }, "*");
+        
+        if (send_gtm === 'true') {
+          window.parent.postMessage({
+            event: "whatsapp_lead",
+            ...leadData, ...utmData,
+          }, "*");
+        }
+        // Redirigir a WhatsApp
         if (leadPhone && mediaq === "desktop" && window.top) {
           window.top.location.href = `https://web.whatsapp.com/send?phone=${leadPhone}&text=Hola, soy ${leadData.name}. Estoy interesado en más información.`
         }
