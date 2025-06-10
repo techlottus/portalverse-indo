@@ -56,7 +56,9 @@ const WhatsappFormPage = () => {
             event_name={queryParams?.event_name} 
             event_source={queryParams?.event_source}
             event_source_url={getEventSourceUrl()}
-            client_user_agent={getClientUserAgent()}/>
+            client_user_agent={getClientUserAgent()}
+            test_event_code={queryParams?.test_event_code}
+            />
         </div>
       </div>
     </section>

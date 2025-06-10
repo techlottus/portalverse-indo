@@ -13,6 +13,7 @@ type LeadWhatsappFormTypes = {
   client_user_agent: string | string[] | undefined;
   send_capi?: string | string[] | undefined;
   send_gtm?: string | string[] | undefined;
+  test_event_code?: string | string[] | null;
   utmData?: {
     utm_content?: string | string[] | null;
     utm_term?: string | string[] | null;
@@ -50,7 +51,7 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
    * @property {string} leadPhone - The phone number of the lead.
    * @property {object} utmData - The UTM data associated with the lead, typically used for tracking marketing campaigns.
    */
-  const { leadPhone, utmData, utmLeads, event_name = "completeRegistration", event_source = "website", event_source_url, client_user_agent, send_gtm = 'false', send_capi = 'false' } = props;
+  const { leadPhone, utmData, utmLeads, event_name = "completeRegistration", event_source = "website", event_source_url, client_user_agent, send_gtm = 'false', send_capi = 'false',test_event_code  } = props;
 
   /**
    * Retrieves the business unit from the environment variables.
@@ -267,7 +268,8 @@ export const LeadWhatsappForm = (props: LeadWhatsappFormTypes) => {
               "gclid": utmData?.gclid || null,
               "source": utmData?.source || null,
               "utm_leads": utmLeads,
-              "modality": leadData.modality
+              "modality": leadData.modality,
+              "test_event_code": test_event_code || null,
             },
           }),
         });
